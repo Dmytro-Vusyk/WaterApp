@@ -1,24 +1,19 @@
 package com.example.waterapp.presenter;
 
-import com.example.waterapp.model.pojo.CurrentTimeWater;
-import com.example.waterapp.model.pojo.DailyWaterVolume;
+import com.example.waterapp.App;
+import com.example.waterapp.model.pojo.CurrentTimeRecord;
+import com.example.waterapp.utils.TimeUtils;
+import com.example.waterapp.view.fragmenthome.FragmentHome;
+import com.example.waterapp.view.fragmenthome.FragmentHomeAdapter;
 
-import net.danlew.android.joda.DateUtils;
-import net.danlew.android.joda.JodaTimeAndroid;
-
-import org.joda.time.DateTime;
-import org.joda.time.LocalTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomePresenter {
 
-
     private static HomePresenter instance;
 
-    public static synchronized HomePresenter getInstance() {
+    public static HomePresenter getInstance() {
         if (instance == null) {
             instance = new HomePresenter();
         }
@@ -30,13 +25,22 @@ public class HomePresenter {
         //TODO make with variable
         int waterVolume = 200;
 
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm");
-        DateTime now = DateTime.now();
-        String currentTime = fmt.print(now);
+        CurrentTimeRecord currentTimeRecord = new CurrentTimeRecord(TimeUtils.getCurrentTime(), waterVolume);
 
-        CurrentTimeWater currentTimeWater = new CurrentTimeWater(currentTime, waterVolume);
-
+        App.getInstance().getDatabase().dailyWaterVolumeDAO().insert(currentTimeRecord);
 
     }
+
+    public List<CurrentTimeRecord> getDailyHistory() {
+
+        long start = TimeUtils.getStartOfCurrentDay();
+        long end = TimeUtils.getEndOfCurrentDay();
+
+        List<CurrentTimeRecord> result = App.getInstance().getDatabase().dailyWaterVolumeDAO().getDailyHistory(start, end);
+
+        return result;
+
+    }
+
 
 }

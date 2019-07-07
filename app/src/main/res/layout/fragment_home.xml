@@ -37,7 +37,8 @@
             app:arc_suffix_text_size="16sp"
             app:layout_constraintEnd_toStartOf="@+id/vertical_middle"
             app:layout_constraintStart_toStartOf="@+id/vertical_middle"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="8dp" />
 
         <ImageButton
             android:id="@+id/btn_add_water"
@@ -63,7 +64,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintGuide_begin="192dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="411dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

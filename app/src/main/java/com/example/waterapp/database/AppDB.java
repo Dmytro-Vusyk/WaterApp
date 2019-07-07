@@ -6,20 +6,20 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.waterapp.model.dao.DailyWaterVolumeDAO;
-import com.example.waterapp.model.pojo.DailyWaterVolume;
+import com.example.waterapp.model.dao.CurrentTimeRecordDAO;
+import com.example.waterapp.model.pojo.CurrentTimeRecord;
 
-@Database(entities = {DailyWaterVolume.class}, version = 1)
+@Database(entities = {CurrentTimeRecord.class}, version = 1)
 public abstract class AppDB extends RoomDatabase {
 
-   public abstract DailyWaterVolumeDAO dailyWaterVolumeDAO();
+   public abstract CurrentTimeRecordDAO dailyWaterVolumeDAO();
 
    private static AppDB instance;
 
-   public static synchronized AppDB getInstance(Context context) {
+   public static AppDB getInstance(Context context) {
       if (instance == null) {
          instance = Room.databaseBuilder(context.getApplicationContext(),
-                 AppDB.class, "water_app_db.db")
+                 AppDB.class, "water_app_database")
                  .fallbackToDestructiveMigration()
                  .allowMainThreadQueries()
                  .build();

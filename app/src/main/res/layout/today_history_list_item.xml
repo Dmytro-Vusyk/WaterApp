@@ -10,7 +10,7 @@
    >
 
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +26,8 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:srcCompat="@android:drawable/btn_dialog" />
+        app:srcCompat="@android:drawable/btn_dialog"
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:id="@+id/drink_time"
@@ -36,7 +37,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="08:00"
+        android:text="@string/record_time"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toStartOf="@+id/water_volume"
@@ -51,7 +52,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:textSize="16sp"
-        android:text="Next time"
+        android:text="@string/next_time_label"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/drink_time"
         app:layout_constraintHorizontal_bias="0.0"
@@ -66,7 +67,8 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:srcCompat="@android:drawable/btn_dialog" />
+        app:srcCompat="@android:drawable/btn_dialog"
+        android:layout_marginRight="8dp" />
 
     <TextView
         android:id="@+id/water_volume"
@@ -74,10 +76,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:text="200ml"
+        android:text="@string/water_value"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toStartOf="@+id/btn_delete"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        android:layout_marginRight="32dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

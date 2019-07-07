@@ -8,7 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.waterapp.App;
 import com.example.waterapp.R;
+import com.example.waterapp.model.pojo.CurrentTimeRecord;
+import com.example.waterapp.presenter.HomePresenter;
+import com.example.waterapp.utils.TimeUtils;
+
+import java.util.List;
 
 public class FragmentHomeAdapter extends RecyclerView.Adapter<FragmentHomeViewHolder> {
 
@@ -23,6 +29,8 @@ public class FragmentHomeAdapter extends RecyclerView.Adapter<FragmentHomeViewHo
      */
     final private FragmentHomeAdapterOnClickHandler clickHandler;
 
+    //TODO may produce exception
+    private List<CurrentTimeRecord> history;
 
     /**
      * Creates a ForecastAdapter.
@@ -40,7 +48,7 @@ public class FragmentHomeAdapter extends RecyclerView.Adapter<FragmentHomeViewHo
     @NonNull
     @Override
     public FragmentHomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+    Context context = App.getInstance().getApplicationContext();
         int layoutId = R.layout.today_history_list_item;
 
         View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
@@ -50,23 +58,36 @@ public class FragmentHomeAdapter extends RecyclerView.Adapter<FragmentHomeViewHo
         return new FragmentHomeViewHolder(view);
     }
 
+
+
     //TODO change logic for Cursor
 
     @Override
     public void onBindViewHolder(@NonNull FragmentHomeViewHolder holder, int position) {
+
+       CurrentTimeRecord record = history.get(position);
+
         holder.ivDrink.setImageResource(R.drawable.ic_water_glass);
         holder.ibDelete.setImageResource(R.drawable.ic_delete_button);
 
-        holder.tvDate.setText("22:00");
-        holder.tvDate.setContentDescription("22:00 desc");
+        holder.tvDate.setText(TimeUtils.getFormattedTime(record.getTime()));
+        holder.tvDate.setContentDescription(TimeUtils.getFormattedTime(record.getTime()));
 
         holder.tvNextTimeLabel.setVisibility(View.INVISIBLE);
 
-        holder.tvWaterVolume.setText("200 ml");
+        holder.tvWaterVolume.setText(Long.toString(record.getWaterVolume()));
+
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        if (history == null) return 0;
+        return history.size();
     }
+
+    public void setHistory(){
+        history = HomePresenter.getInstance().getDailyHistory();
+    }
+
+
 }

@@ -24,8 +24,9 @@ public class MainActivity extends AppCompatActivity implements FragmentHomeAdapt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         JodaTimeAndroid.init(this);
+        AppDB appDB = Room.databaseBuilder(getApplicationContext(),AppDB.class,"water_app_database").build();
         setContentView(R.layout.activity_main);
-        AppDB appDB = Room.databaseBuilder(getApplicationContext(),AppDB.class,"database").build();
+
 
     }
 
