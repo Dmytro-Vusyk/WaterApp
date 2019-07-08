@@ -45,7 +45,7 @@
             />
     </LinearLayout>
 
-    <fragment
+    <FrameLayout
         android:name="com.example.waterapp.view.fragmenthome.FragmentHome"
         android:id="@+id/fragment_place"
         android:layout_width="match_parent"

@@ -68,6 +68,9 @@ public class FragmentHomeAdapter extends RecyclerView.Adapter<FragmentHomeViewHo
        CurrentTimeRecord record = history.get(position);
 
         holder.ivDrink.setImageResource(R.drawable.ic_water_glass);
+        holder.ivDrink.setMaxHeight(22);
+        holder.ivDrink.setMaxWidth(22);
+
         holder.ibDelete.setImageResource(R.drawable.ic_delete_button);
 
         holder.tvDate.setText(TimeUtils.getFormattedTime(record.getTime()));

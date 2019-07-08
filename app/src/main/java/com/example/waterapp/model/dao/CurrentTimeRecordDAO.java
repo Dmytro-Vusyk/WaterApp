@@ -15,7 +15,7 @@ import java.util.List;
 public interface CurrentTimeRecordDAO {
 
 
-    @Query("select * from time_record where time >= :startOfTheDay and time <= :endOfTheDay order by time asc")
+    @Query("select * from time_record where time >= :startOfTheDay and time <= :endOfTheDay order by time desc")
     List<CurrentTimeRecord> getDailyHistory(long startOfTheDay, long endOfTheDay);
 
     @Insert
