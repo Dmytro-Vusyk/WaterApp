@@ -26,6 +26,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
     ImageButton ibAddWater;
 
     HomePresenter hp = HomePresenter.getInstance();
+    FragmentHomeAdapter fragmentHomeAdapter;
 
     @Nullable
     @Override
@@ -52,7 +53,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
     }
 
     private void initRecyclerView() {
-        FragmentHomeAdapter fragmentHomeAdapter = new FragmentHomeAdapter(context, fragmentHomeAdapterOnClickHandler);
+        fragmentHomeAdapter = new FragmentHomeAdapter(context, fragmentHomeAdapterOnClickHandler);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(fragmentHomeAdapter);
         fragmentHomeAdapter.setHistory();
@@ -65,9 +66,8 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
         switch (v.getId()){
             case R.id.btn_add_water:
                 hp.addWater();
-                FragmentHomeAdapter fha = new FragmentHomeAdapter(context,fragmentHomeAdapterOnClickHandler);
-                fha.setHistory();
-                fha.notifyDataSetChanged();
+                fragmentHomeAdapter.setHistory();
+                fragmentHomeAdapter.notifyDataSetChanged();
                 break;
 
         }
