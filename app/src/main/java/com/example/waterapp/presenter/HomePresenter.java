@@ -21,7 +21,7 @@ public class HomePresenter {
     }
 
     //TODO toast massage and choice of water count
-    public void addWater() {
+    public void addWaterRecord() {
         //TODO make with variable
         int waterVolume = 200;
 
@@ -43,4 +43,24 @@ public class HomePresenter {
     }
 
 
+    //TODO make logic for progress == max.
+    public int getCurrentWaterProgress(){
+
+        int progress = 0;
+
+        List<CurrentTimeRecord> dailyHistory = getDailyHistory();
+
+        if (dailyHistory != null){
+            for (CurrentTimeRecord record: dailyHistory) {
+                progress += record.getWaterVolume();
+            }
+        }
+
+        return progress;
+    }
+
+
+    public void deleteWaterRecord() {
+
+    }
 }

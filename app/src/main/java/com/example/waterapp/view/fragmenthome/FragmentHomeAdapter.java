@@ -60,7 +60,7 @@ public class FragmentHomeAdapter extends RecyclerView.Adapter<FragmentHomeViewHo
 
 
 
-    //TODO change logic for Cursor
+    //TODO change logic for Cursor. Change Image and add planned tasks
 
     @Override
     public void onBindViewHolder(@NonNull FragmentHomeViewHolder holder, int position) {
@@ -88,6 +88,7 @@ public class FragmentHomeAdapter extends RecyclerView.Adapter<FragmentHomeViewHo
         return history.size();
     }
 
+    //TODO run it not in main thread.
     public void setHistory(){
         history = HomePresenter.getInstance().getDailyHistory();
     }

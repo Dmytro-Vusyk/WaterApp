@@ -18,13 +18,8 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 public class MainActivity extends AppCompatActivity implements FragmentHomeAdapterOnClickHandler {
 
-    FragmentHome fragmentHome;
-    FragmentHistory fragmentHistory;
-    FragmentSettings fragmentSettings;
-    final static String TAG_1 = "FRAGMENT_HOME";
-    final static String TAG_2 = "FRAGMENT_HISTORY";
-    final static String TAG_3 = "FRAGMENT_SETTINGS";
-
+    boolean isCreated = false;
+    FragmentTransaction ft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +27,15 @@ public class MainActivity extends AppCompatActivity implements FragmentHomeAdapt
         JodaTimeAndroid.init(this);
         AppDB appDB = Room.databaseBuilder(getApplicationContext(), AppDB.class, "water_app_database").build();
         setContentView(R.layout.activity_main);
+        showFragmentHome();
 
 
     }
 
     public void onButtonClicked(View view) {
-        boolean isCreated = false;
+
         Fragment fragment = null;
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft = getSupportFragmentManager().beginTransaction();
 
         switch (view.getId()) {
             case R.id.btn_home:
@@ -59,16 +55,22 @@ public class MainActivity extends AppCompatActivity implements FragmentHomeAdapt
                 break;
         }
 
+
+    }
+
+
+    private void showFragmentHome(){
+        ft = getSupportFragmentManager().beginTransaction();
         if (!isCreated) {
+            FragmentHome fragmentHome = new FragmentHome();
             if (Build.VERSION.SDK_INT >= 26) {
                 ft.setReorderingAllowed(false);
             }
 
-            ft.add(R.id.fragment_place, fragment);
+            ft.replace(R.id.fragment_place, fragmentHome);
             ft.commit();
         }
     }
-
 
     @Override
     public void onClick(long date) {
