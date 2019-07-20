@@ -3,13 +3,11 @@ package com.example.waterapp.presenter;
 import com.example.waterapp.App;
 import com.example.waterapp.model.pojo.CurrentTimeRecord;
 import com.example.waterapp.utils.TimeUtils;
-import com.example.waterapp.view.fragmenthome.FragmentHome;
-import com.example.waterapp.view.fragmenthome.FragmentHomeAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomePresenter {
+
 
     private static HomePresenter instance;
 
@@ -60,7 +58,8 @@ public class HomePresenter {
     }
 
 
-    public void deleteWaterRecord() {
+    public void deleteWaterRecord(CurrentTimeRecord currentTimeRecord) {
+       App.getInstance().getDatabase().dailyWaterVolumeDAO().delete(currentTimeRecord);
 
     }
 }

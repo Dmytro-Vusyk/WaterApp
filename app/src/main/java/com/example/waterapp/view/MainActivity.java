@@ -12,11 +12,10 @@ import androidx.room.Room;
 import com.example.waterapp.R;
 import com.example.waterapp.database.AppDB;
 import com.example.waterapp.view.fragmenthome.FragmentHome;
-import com.example.waterapp.view.fragmenthome.FragmentHomeAdapterOnClickHandler;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-public class MainActivity extends AppCompatActivity implements FragmentHomeAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity {
 
     boolean isCreated = false;
     FragmentTransaction ft;
@@ -72,8 +71,5 @@ public class MainActivity extends AppCompatActivity implements FragmentHomeAdapt
         }
     }
 
-    @Override
-    public void onClick(long date) {
 
-    }
 }

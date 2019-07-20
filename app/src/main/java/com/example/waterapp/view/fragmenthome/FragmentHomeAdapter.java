@@ -1,9 +1,13 @@
 package com.example.waterapp.view.fragmenthome;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,10 +20,10 @@ import com.example.waterapp.utils.TimeUtils;
 
 import java.util.List;
 
-public class FragmentHomeAdapter extends RecyclerView.Adapter<FragmentHomeViewHolder> {
+public class FragmentHomeAdapter extends RecyclerView.Adapter<FragmentHomeAdapter.FragmentHomeViewHolder> {
 
     /* The context we use to utility methods, app resources and layout inflaters */
-    private final Context context;
+    private Context context;
 
     /*
      * Below, we've defined an interface to handle clicks on items within this Adapter. In the
@@ -27,46 +31,44 @@ public class FragmentHomeAdapter extends RecyclerView.Adapter<FragmentHomeViewHo
      * said interface. We store that instance in this variable to call the onClick method whenever
      * an item is clicked in the list.
      */
-    final private FragmentHomeAdapterOnClickHandler clickHandler;
 
-    //TODO may produce exception
+    HomePresenter homePresenter = HomePresenter.getInstance();
+
+    FragmentHome fragmentHome;
+
     private List<CurrentTimeRecord> history;
 
     /**
      * Creates a ForecastAdapter.
      *
      * @param context      Used to talk to the UI and app resources
-     * @param clickHandler The on-click handler for this adapter. This single handler is called
-     *                     when an item is clicked.
      */
-    public FragmentHomeAdapter(Context context, FragmentHomeAdapterOnClickHandler clickHandler) {
+    public FragmentHomeAdapter(Context context, FragmentHome fragmentHome) {
         this.context = context;
-        this.clickHandler = clickHandler;
+        this.fragmentHome = fragmentHome;
     }
 
 
     @NonNull
     @Override
     public FragmentHomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-    Context context = App.getInstance().getApplicationContext();
+        context = App.getInstance().getApplicationContext();
         int layoutId = R.layout.today_history_list_item;
 
         View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
 
-        view.setFocusable(true);
+        view.setFocusable(false);
+        view.setClickable(false);
 
         return new FragmentHomeViewHolder(view);
     }
 
 
-
-    //TODO change logic for Cursor. Change Image and add planned tasks
-
     @Override
     public void onBindViewHolder(@NonNull FragmentHomeViewHolder holder, int position) {
 
-       CurrentTimeRecord record = history.get(position);
-
+        CurrentTimeRecord record = history.get(position);
+        holder.setCurrentTimeRecord(record);
         holder.ivDrink.setImageResource(R.drawable.ic_water_glass);
         holder.ivDrink.setMaxHeight(22);
         holder.ivDrink.setMaxWidth(22);
@@ -75,8 +77,6 @@ public class FragmentHomeAdapter extends RecyclerView.Adapter<FragmentHomeViewHo
 
         holder.tvDate.setText(TimeUtils.getFormattedTime(record.getTime()));
         holder.tvDate.setContentDescription(TimeUtils.getFormattedTime(record.getTime()));
-
-        holder.tvNextTimeLabel.setVisibility(View.INVISIBLE);
 
         holder.tvWaterVolume.setText(Long.toString(record.getWaterVolume()));
 
@@ -88,9 +88,49 @@ public class FragmentHomeAdapter extends RecyclerView.Adapter<FragmentHomeViewHo
         return history.size();
     }
 
-    //TODO run it not in main thread.
-    public void setHistory(){
+    public void setHistory() {
         history = HomePresenter.getInstance().getDailyHistory();
+    }
+
+    class FragmentHomeViewHolder extends RecyclerView.ViewHolder implements FragmentHomeDeleteButtonOnClickHandler {
+
+        final ImageView ivDrink;
+        final ImageButton ibDelete;
+
+        final TextView tvDate;
+        final TextView tvWaterVolume;
+
+        private CurrentTimeRecord currentTimeRecord;
+
+
+        public FragmentHomeViewHolder(@NonNull View view) {
+            super(view);
+
+            ivDrink = (ImageView) view.findViewById(R.id.drink_pic);
+            tvDate = (TextView) view.findViewById(R.id.drink_time);
+            tvWaterVolume = (TextView) view.findViewById(R.id.water_volume);
+            ibDelete = (ImageButton) view.findViewById(R.id.btn_delete);
+            ibDelete.setOnClickListener(this);
+
+        }
+
+        public void setCurrentTimeRecord(CurrentTimeRecord currentTimeRecord) {
+            this.currentTimeRecord = currentTimeRecord;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            int btnId = v.getId();
+
+            if (btnId == ibDelete.getId()) {
+                homePresenter.deleteWaterRecord(currentTimeRecord);
+                setHistory();
+                fragmentHome.initArcProgress();
+                notifyDataSetChanged();
+
+            }
+        }
     }
 
 

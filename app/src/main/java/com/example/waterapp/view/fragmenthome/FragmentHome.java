@@ -19,14 +19,16 @@ import com.example.waterapp.presenter.HomePresenter;
 import com.example.waterapp.view.progressBar.ArcProgress;
 
 public class FragmentHome extends Fragment implements View.OnClickListener {
+
+    final static private String BOTTOM_TEXT = "Daily Drink Target";
+
     Context context = getContext();
-    FragmentHomeAdapterOnClickHandler fragmentHomeAdapterOnClickHandler;
     RecyclerView recyclerView;
     ArcProgress arcProgress;
     ImageButton ibAddWater;
 
     HomePresenter hp = HomePresenter.getInstance();
-    FragmentHomeAdapter fragmentHomeAdapter;
+    private FragmentHomeAdapter fragmentHomeAdapter;
 
     @Nullable
     @Override
@@ -35,25 +37,23 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
         ibAddWater = (ImageButton) view.findViewById(R.id.btn_add_water);
         ibAddWater.setOnClickListener(this);
         recyclerView = (RecyclerView) view.findViewById(R.id.event_menu);
-        initArcProgress(view);
+        arcProgress = (ArcProgress) view.findViewById(R.id.progress_circular);
+        initArcProgress();
         initRecyclerView();
         return view;
     }
 
 
     //TODO change logic for setMax and setProgress
-    private void initArcProgress(View view) {
-
-        arcProgress = (ArcProgress) view.findViewById(R.id.progress_circular);
-
+    void initArcProgress() {
         arcProgress.setMax(2000);
-        arcProgress.setProgress(850);
-        arcProgress.setBottomText("Daily Drink Target");
+        arcProgress.setProgress(hp.getCurrentWaterProgress());
+        arcProgress.setBottomText(BOTTOM_TEXT);
         arcProgress.setBottomTextSize(44);
     }
 
     private void initRecyclerView() {
-        fragmentHomeAdapter = new FragmentHomeAdapter(context, fragmentHomeAdapterOnClickHandler);
+        fragmentHomeAdapter = new FragmentHomeAdapter(context, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(fragmentHomeAdapter);
         fragmentHomeAdapter.setHistory();
@@ -63,17 +63,15 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_add_water:
-                hp.addWater();
+                hp.addWaterRecord();
                 fragmentHomeAdapter.setHistory();
+                initArcProgress();
                 fragmentHomeAdapter.notifyDataSetChanged();
                 break;
 
         }
-
-
     }
-
 
 }
